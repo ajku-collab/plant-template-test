@@ -9,9 +9,226 @@
   <meta property="og:description" content="Interactive botanical pages with QR sharing, maps and multilingual content.">
   <meta property="og:type" content="website">
   <meta property="og:image" content="test-plant/image.jpg">
-  <!-- simple inline SVG favicon -->
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='100%25' height='100%25' fill='%23eaf6ea'/%3E%3Ctext x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' font-size='36' font-family='Arial' fill='%232e7d32'%3E%F0%9F%8C%BF%3C/text%3E%3C/svg%3E">
-  <link rel="stylesheet" href="assets/styles.css">
+
+  <!-- favicon: simple inline SVG -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='100%25' height='100%25' fill='%23eaf6ea'/%3E%3Ctext x='50%25' y='55%25' font-size='36' text-anchor='middle' fill='%23336539' font-family='Arial,Helvetica,sans-serif'%3E%F0%9F%8C%BF%3C/text%3E%3C/svg%3E">
+
+  <!-- Font (now local via Google) -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Inline styles (consolidated from assets/styles.css) -->
+  <style>
+  :root{
+    --bg:#fbfdf8;
+    --card:#ffffff;
+    --muted:#556068;
+    --accent:#2f8f4a;
+    --accent-2:#1f6f3a;
+    --surface-shadow: 0 6px 18px rgba(18,30,21,0.08);
+    --radius:12px;
+    --glass: rgba(255,255,255,0.6);
+    color-scheme: light;
+  }
+
+  [data-theme="dark"]{
+    --bg:#0b0f0d;
+    --card:#07110a;
+    --muted:#98a29a;
+    --accent:#66d07f;
+    --accent-2:#4cc05f;
+    --surface-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    --glass: rgba(12,18,14,0.35);
+    color-scheme: dark;
+  }
+
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background:linear-gradient(180deg,var(--bg),color-mix(in srgb, var(--bg) 92%, white));
+    color:var(--muted);
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    line-height:1.45;
+    transition:background .3s ease,color .2s ease;
+  }
+
+  /* Container */
+  .container{
+    max-width:1100px;
+    margin:0 auto;
+    padding:1.25rem;
+  }
+
+  /* Header */
+  .site-header{
+    background:linear-gradient(90deg,var(--glass), transparent);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid rgba(0,0,0,0.04);
+    padding:1rem 0;
+    position:sticky;
+    top:0;
+    z-index:40;
+  }
+  .header-inner{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:1rem;
+  }
+  .header-actions{display:flex;align-items:center;gap:.75rem}
+
+  /* Title */
+  h1{
+    margin:.125rem 0 .25rem 0;
+    font-size:1.375rem;
+    color:var(--accent-2);
+    letter-spacing:-0.02em;
+  }
+  .lead{
+    margin:0;
+    color:var(--muted);
+    font-size:.95rem;
+  }
+
+  /* Theme toggle */
+  .theme-toggle{
+    display:inline-flex;
+    align-items:center;
+    gap:.5rem;
+    font-size:.9rem;
+  }
+  .theme-toggle input{transform:scale(1.05)}
+
+  /* Top controls */
+  .controls-top{
+    display:flex;
+    justify-content:center;
+    margin:1.25rem 0;
+  }
+  #search{
+    width:100%;
+    max-width:760px;
+    padding:.75rem 1rem;
+    border-radius:999px;
+    border:1px solid rgba(0,0,0,0.06);
+    box-shadow: 0 6px 18px rgba(18,30,21,0.04);
+    font-size:1rem;
+    outline:none;
+    transition:box-shadow .18s ease,transform .12s ease;
+    background:linear-gradient(180deg,white, #fbfffb);
+  }
+  #search:focus{
+    box-shadow: 0 10px 30px rgba(47,143,74,0.12);
+    transform:translateY(-1px);
+    border-color:var(--accent);
+  }
+
+  /* Grid of cards */
+  .card-grid{
+    display:grid;
+    grid-template-columns: repeat(auto-fill,minmax(220px,1fr));
+    gap:1rem;
+    margin:0 0 2rem 0;
+    padding-bottom: 1rem;
+  }
+
+  /* Plant card */
+  .card{
+    background:var(--card);
+    border-radius:var(--radius);
+    overflow:hidden;
+    box-shadow:var(--surface-shadow);
+    transition:transform .22s ease, box-shadow .22s ease, opacity .4s ease;
+    transform-origin:center;
+    display:flex;
+    flex-direction:column;
+  }
+  .card:focus-within, .card:hover{
+    transform: translateY(-6px);
+    box-shadow: 0 24px 50px rgba(17,34,28,0.14);
+  }
+  .card .imgwrap{
+    width:100%;
+    aspect-ratio: 4/3;
+    overflow:hidden;
+    background:linear-gradient(180deg, #eef8ef, #f8fff9);
+  }
+  .card img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+    transition:transform .6s cubic-bezier(.2,.8,.2,1);
+  }
+  .card:hover img{ transform: scale(1.05); }
+
+  /* card body */
+  .card-body{
+    padding:0.85rem;
+    display:flex;
+    gap:.5rem;
+    flex-direction:column;
+  }
+  .card h4{
+    margin:0;
+    font-size:1.05rem;
+    color: #0b3f28;
+  }
+  .card p{
+    margin:.35rem 0 0 0;
+    font-size:.88rem;
+    color:var(--muted);
+  }
+
+  /* small meta row */
+  .meta{
+    margin-top:.6rem;
+    display:flex;
+    gap:.5rem;
+    align-items:center;
+    flex-wrap:wrap;
+    font-size:.82rem;
+    color:var(--muted);
+  }
+
+  /* help panel */
+  .help.panel{
+    background: linear-gradient(180deg, rgba(255,255,255,0.6), transparent);
+    border-radius:10px;
+    padding:1rem;
+    box-shadow: 0 8px 20px rgba(10,20,12,0.03);
+    color:var(--muted);
+  }
+
+  /* Footer */
+  .site-footer{
+    padding:1.25rem 0;
+    color:var(--muted);
+    text-align:center;
+    font-size:.95rem;
+  }
+
+  /* Utilities */
+  .hidden{display:none}
+  .visually-hidden{
+    position:absolute !important;
+    height:1px; width:1px;
+    overflow:hidden; clip:rect(1px,1px,1px,1px);
+    white-space:nowrap;
+  }
+
+  /* small responsive tweaks */
+  @media (max-width:640px){
+    .header-inner{flex-direction:column;align-items:flex-start;gap:.6rem}
+    h1{font-size:1.15rem}
+    .card-grid{grid-template-columns: repeat(2, minmax(0,1fr));}
+  }
+  </style>
+
+  <!-- QR library (optional external; keep if you need QR rendering) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
 </head>
 <body>
   <header class="site-header">
@@ -32,11 +249,25 @@
     <div id="controls" class="controls-top">
       <input id="search" placeholder="Search plants by name, family..." aria-label="Search plants">
     </div>
-    <section id="plants" class="card-grid" aria-live="polite"></section>
+    <section id="plants" class="card-grid" aria-live="polite" aria-label="Plant list">
+      <!-- Example plant card (your existing JS that renders cards can keep the same structure)
+           When creating cards, ensure <img loading="lazy"> and call window.observeCard(cardEl) -->
+      <!--
+      <article class="card" tabindex="0">
+        <div class="imgwrap">
+          <img src="test-plant/image.jpg" alt="Plant name" loading="lazy">
+        </div>
+        <div class="card-body">
+          <h4>Plant name</h4>
+          <p class="meta">Family — Region</p>
+        </div>
+      </article>
+      -->
+    </section>
 
     <section class="help panel">
       <h3>How it works</h3>
-      <p>This site renders plant pages from a small data manifest. Each plant folder contains a data.json and image. When hosted (GitHub Pages), scan a plant's QR code to open the plant page on mobile.</p>
+      <p>This site renders plant pages from a small data manifest. Each plant folder contains a data.json and image. When hosted (GitHub Pages), scan a plant's QR code to open the plant page on mobile — the QR links point to the plant page on this site.</p>
     </section>
   </main>
 
@@ -44,7 +275,106 @@
     <div class="container">Made with 🌿 — Plant Template Test</div>
   </footer>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
-  <script src="assets/main.js" defer></script>
+  <!-- Consolidated JS: theme persistence, helpers, and small UX hooks -->
+  <script>
+  (function () {
+    // Theme toggle + persistence
+    const toggleId = 'themeToggle';
+    function applyTheme(theme) {
+      if (theme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+      else document.documentElement.removeAttribute('data-theme');
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+      const toggle = document.getElementById(toggleId);
+      const saved = localStorage.getItem('plant-theme');
+      if (saved) {
+        applyTheme(saved);
+        if (toggle) toggle.checked = (saved === 'dark');
+      }
+
+      if (toggle) {
+        toggle.addEventListener('change', () => {
+          const theme = toggle.checked ? 'dark' : 'light';
+          applyTheme(theme);
+          localStorage.setItem('plant-theme', theme);
+        });
+      }
+
+      // Intersection-based reveal for cards
+      const plantsSection = document.getElementById('plants');
+      const observer = new IntersectionObserver((entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) {
+            e.target.style.opacity = 1;
+            e.target.style.transform = 'translateY(0)';
+            observer.unobserve(e.target);
+          }
+        }
+      }, { threshold: 0.12 });
+
+      window.observeCard = (card) => {
+        if (!card) return;
+        card.style.opacity = 0;
+        card.style.transform = 'translateY(10px)';
+        card.style.transition = 'opacity .5s ease, transform .5s cubic-bezier(.2,.9,.3,1)';
+        observer.observe(card);
+      };
+
+      // If there are already cards on page load, set them up
+      const existingCards = document.querySelectorAll('.card');
+      existingCards.forEach(c => {
+        // ensure images are lazy
+        const img = c.querySelector('img');
+        if (img) img.setAttribute('loading', 'lazy');
+        window.observeCard(c);
+      });
+
+      // Helper: when your app dynamically inserts cards, call window.observeCard(newCard)
+      // Small DOM helper to auto-apply to future .card nodes added to #plants
+      const plantsObserver = new MutationObserver((mutations) => {
+        for (const m of mutations) {
+          for (const node of m.addedNodes) {
+            if (!(node instanceof HTMLElement)) continue;
+            if (node.matches && node.matches('.card')) {
+              const img = node.querySelector('img');
+              if (img) img.setAttribute('loading', 'lazy');
+              window.observeCard(node);
+            } else {
+              // if a wrapper with inner cards was added, find them
+              const innerCards = node.querySelectorAll && node.querySelectorAll('.card');
+              innerCards && innerCards.forEach(ic => {
+                const img = ic.querySelector('img');
+                if (img) img.setAttribute('loading', 'lazy');
+                window.observeCard(ic);
+              });
+            }
+          }
+        }
+      });
+      plantsObserver.observe(plantsSection, { childList: true, subtree: false });
+
+      // Basic search hook (if you have plant data rendered client-side; this is a minimal filter)
+      const searchInput = document.getElementById('search');
+      if (searchInput) {
+        let timeout = null;
+        searchInput.addEventListener('input', (e) => {
+          clearTimeout(timeout);
+          const q = e.target.value.trim().toLowerCase();
+          timeout = setTimeout(() => {
+            const cards = document.querySelectorAll('#plants .card');
+            if (!q) {
+              cards.forEach(c => c.style.display = '');
+              return;
+            }
+            cards.forEach(c => {
+              const text = (c.textContent || '').toLowerCase();
+              c.style.display = text.includes(q) ? '' : 'none';
+            });
+          }, 160);
+        });
+      }
+    });
+  })();
+  </script>
 </body>
 </html>

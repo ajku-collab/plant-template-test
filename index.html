@@ -30,7 +30,7 @@
     let lang = 'en';
 
     async function loadData() {
-      const response = await fetch('data.json');
+      const response = await fetch('test-plant/data.json');
       const data = await response.json();
 
       document.getElementById('plant-name').textContent = data.name[lang];

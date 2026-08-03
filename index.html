@@ -1,62 +1,52 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Plant Information</title>
-  <style>
-    body { font-family: Arial, sans-serif; background: #f4f9f4; color: #333; margin: 20px; }
-    h1 { color: #2e7d32; }
-    .toggle { margin-bottom: 20px; }
-    .section { margin-bottom: 20px; padding: 10px; border-left: 4px solid #81c784; background: #ffffff; }
-    img { max-width: 300px; display: block; margin-bottom: 20px; }
-    iframe { width: 100%; height: 300px; border: none; }
-  </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Plant Template — Plants</title>
+  <link rel="stylesheet" href="assets/styles.css">
 </head>
-<body>
-  <div class="toggle">
-    <button onclick="setLanguage('en')">English</button>
-    <button onclick="setLanguage('hi')">हिन्दी</button>
-  </div>
+<body data-data-path="">
+  <header class="site-header">
+    <div class="container">
+      <h1>Plant Template</h1>
+      <p class="lead">Interactive botanical pages with QR sharing, maps and multilingual content.</p>
+    </div>
+  </header>
 
-  <h1 id="plant-name"></h1>
-  <p><strong>Scientific Name:</strong> <span id="scientific-name"></span></p>
-  <p><strong>Family:</strong> <span id="family"></span></p>
-  <img id="plant-image" alt="Plant Image">
+  <main class="container">
+    <section class="card-grid">
+      <article class="card">
+        <img src="test-plant/image.jpg" alt="Test Plant" class="card-image">
+        <div class="card-body">
+          <h2>Test Plant</h2>
+          <p class="muted">Planta experimentalis — Testaceae</p>
+          <p>This is a sample plant used to demonstrate the interactive template. Open the full plant page to view details, map and QR code.</p>
+          <p>
+            <a class="btn" href="test-plant/">Open plant page</a>
+            <a class="btn ghost" href="test-plant/data.json" target="_blank" rel="noreferrer">View data.json</a>
+          </p>
+        </div>
+      </article>
 
-  <div id="sections"></div>
-  <div id="map"></div>
+      <!-- Add more cards for additional plants as needed -->
+    </section>
 
-  <script>
-    let lang = 'en';
+    <section class="help">
+      <h3>How to use this repo</h3>
+      <ul>
+        <li>Enable GitHub Pages (Settings → Pages) and serve the site from the main branch root.</li>
+        <li>Visit /test-plant/ to see the plant page. Use the QR button to share the page with visitors.</li>
+        <li>Add new plant folders next to <code>test-plant/</code> with a <code>data.json</code> and an <code>index.html</code> or reuse this template.</li>
+      </ul>
+    </section>
+  </main>
 
-    async function loadData() {
-      const response = await fetch('test-plant/data.json');
-      const data = await response.json();
+  <footer class="site-footer">
+    <div class="container">Made with 🌿 — Plant Template Test</div>
+  </footer>
 
-      document.getElementById('plant-name').textContent = data.name[lang];
-      document.getElementById('scientific-name').textContent = data.scientific_name;
-      document.getElementById('family').textContent = data.family[lang];
-      document.getElementById('plant-image').src = data.image;
-
-      const sectionsDiv = document.getElementById('sections');
-      sectionsDiv.innerHTML = '';
-      for (const [key, value] of Object.entries(data.sections)) {
-        const section = document.createElement('div');
-        section.className = 'section';
-        section.innerHTML = `<h2>${key.replace('_',' ')}</h2><p>${value[lang]}</p>`;
-        sectionsDiv.appendChild(section);
-      }
-
-      document.getElementById('map').innerHTML =
-        `<iframe src="https://maps.google.com/maps?q=${data.location.lat},${data.location.lng}&z=${data.location.zoom}&output=embed"></iframe>`;
-    }
-
-    function setLanguage(selected) {
-      lang = selected;
-      loadData();
-    }
-
-    loadData();
-  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="assets/main.js" defer></script>
 </body>
 </html>

@@ -4,41 +4,39 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Plant Template — Plants</title>
+  <meta name="description" content="Interactive botanical pages with QR sharing, maps and multilingual content.">
+  <meta property="og:title" content="Plant Template — Plants">
+  <meta property="og:description" content="Interactive botanical pages with QR sharing, maps and multilingual content.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="test-plant/image.jpg">
+  <!-- simple inline SVG favicon -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='100%25' height='100%25' fill='%23eaf6ea'/%3E%3Ctext x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' font-size='36' font-family='Arial' fill='%232e7d32'%3E%F0%9F%8C%BF%3C/text%3E%3C/svg%3E">
   <link rel="stylesheet" href="assets/styles.css">
 </head>
-<body data-data-path="">
+<body>
   <header class="site-header">
-    <div class="container">
-      <h1>Plant Template</h1>
-      <p class="lead">Interactive botanical pages with QR sharing, maps and multilingual content.</p>
+    <div class="container header-inner">
+      <div>
+        <h1>Plant Template</h1>
+        <p class="lead">Beautiful, shareable plant pages — QR codes, interactive maps, multilingual content.</p>
+      </div>
+      <div class="header-actions">
+        <label class="theme-toggle" title="Toggle dark mode">
+          <input id="themeToggle" type="checkbox" aria-label="Toggle dark mode"> Dark
+        </label>
+      </div>
     </div>
   </header>
 
-  <main class="container">
-    <section class="card-grid">
-      <article class="card">
-        <img src="test-plant/image.jpg" alt="Test Plant" class="card-image">
-        <div class="card-body">
-          <h2>Test Plant</h2>
-          <p class="muted">Planta experimentalis — Testaceae</p>
-          <p>This is a sample plant used to demonstrate the interactive template. Open the full plant page to view details, map and QR code.</p>
-          <p>
-            <a class="btn" href="test-plant/">Open plant page</a>
-            <a class="btn ghost" href="test-plant/data.json" target="_blank" rel="noreferrer">View data.json</a>
-          </p>
-        </div>
-      </article>
+  <main class="container" id="content">
+    <div id="controls" class="controls-top">
+      <input id="search" placeholder="Search plants by name, family..." aria-label="Search plants">
+    </div>
+    <section id="plants" class="card-grid" aria-live="polite"></section>
 
-      <!-- Add more cards for additional plants as needed -->
-    </section>
-
-    <section class="help">
-      <h3>How to use this repo</h3>
-      <ul>
-        <li>Enable GitHub Pages (Settings → Pages) and serve the site from the main branch root.</li>
-        <li>Visit /test-plant/ to see the plant page. Use the QR button to share the page with visitors.</li>
-        <li>Add new plant folders next to <code>test-plant/</code> with a <code>data.json</code> and an <code>index.html</code> or reuse this template.</li>
-      </ul>
+    <section class="help panel">
+      <h3>How it works</h3>
+      <p>This site renders plant pages from a small data manifest. Each plant folder contains a data.json and image. When hosted (GitHub Pages), scan a plant's QR code to open the plant page on mobile.</p>
     </section>
   </main>
 
@@ -46,7 +44,7 @@
     <div class="container">Made with 🌿 — Plant Template Test</div>
   </footer>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
   <script src="assets/main.js" defer></script>
 </body>
 </html>

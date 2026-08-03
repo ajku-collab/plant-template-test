@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Plant Information</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f4f9f4; color: #333; margin: 20px; }
+    h1 { color: #2e7d32; }
+    .toggle { margin-bottom: 20px; }
+    .section { margin-bottom: 20px; padding: 10px; border-left: 4px solid #81c784; background: #ffffff; }
+    img { max-width: 300px; display: block; margin-bottom: 20px; }
+    iframe { width: 100%; height: 300px; border: none; }
+  </style>
+</head>
+<body>
+  <div class="toggle">
+    <button onclick="setLanguage('en')">English</button>
+    <button onclick="setLanguage('hi')">हिन्दी</button>
+  </div>
+
+  <h1 id="plant-name"></h1>
+  <p><strong>Scientific Name:</strong> <span id="scientific-name"></span></p>
+  <p><strong>Family:</strong> <span id="family"></span></p>
+  <img id="plant-image" alt="Plant Image">
+
+  <div id="sections"></div>
+  <div id="map"></div>
+
+  <script>
+    let lang = 'en';
+
+    async function loadData() {
+      const response = await fetch('data.json');
+      const data = await response.json();
+
+      document.getElementById('plant-name').textContent = data.name[lang];
+      document.getElementById('scientific-name').textContent = data.scientific_name;
+      document.getElementById('family').textContent = data.family[lang];
+      document.getElementById('plant-image').src = data.image;
+
+      const sectionsDiv = document.getElementById('sections');
+      sectionsDiv.innerHTML = '';
+      for (const [key, value] of Object.entries(data.sections)) {
+        const section = document.createElement('div');
+        section.className = 'section';
+        section.innerHTML = `<h2>${key.replace('_',' ')}</h2><p>${value[lang]}</p>`;
+        sectionsDiv.appendChild(section);
+      }
+
+      document.getElementById('map').innerHTML =
+        `<iframe src="https://maps.google.com/maps?q=${data.location.lat},${data.location.lng}&z=${data.location.zoom}&output=embed"></iframe>`;
+    }
+
+    function setLanguage(selected) {
+      lang = selected;
+      loadData();
+    }
+
+    loadData();
+  </script>
+</body>
+</html>

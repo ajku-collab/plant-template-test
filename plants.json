@@ -1,9 +1,0 @@
-[
-  {
-    "path": "test-plant/",
-    "name": "Test Plant",
-    "image": "test-plant/image.jpg",
-    "scientific": "Planta experimentalis",
-    "family": "Testaceae"
-  }
-]

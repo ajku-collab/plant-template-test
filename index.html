@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Botanical Plant Profile</title>
+  <style>
+    /* ------------------------------
+       Base Styles (Mobile-first)
+    ------------------------------ */
+    body {
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f5fff5;
+      color: #333;
+      line-height: 1.6;
+      scroll-behavior: smooth; /* Smooth scrolling */
+    }
+
+    header {
+      background: #2e7d32;
+      color: #fff;
+      text-align: center;
+      padding: 1.5rem;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.8rem;
+      letter-spacing: 1px;
+    }
+
+    header h2 {
+      margin: 0.3rem 0 0;
+      font-size: 1rem;
+      font-style: italic;
+      font-weight: 400;
+    }
+
+    main {
+      padding: 1rem;
+      max-width: 800px;
+      margin: auto;
+    }
+
+    /* Collapsible sections */
+    section {
+      margin-bottom: 1rem;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      background: #fff;
+    }
+
+    .section-header {
+      background: #a5d6a7;
+      padding: 1rem;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 1.1rem;
+      transition: background 0.3s;
+    }
+
+    .section-header:hover {
+      background: #81c784;
+    }
+
+    .section-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.5s ease, padding 0.3s ease;
+      padding: 0 1rem;
+    }
+
+    .section-content.open {
+      padding: 1rem;
+    }
+
+    /* Typography */
+    p {
+      margin: 0.5rem 0;
+    }
+
+    /* Responsive adjustments */
+    @media (min-width: 600px) {
+      header h1 {
+        font-size: 2.2rem;
+      }
+      header h2 {
+        font-size: 1.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Neem Tree</h1>
+    <h2>Azadirachta indica</h2>
+  </header>
+
+  <main>
+    <!-- Taxonomy -->
+    <section>
+      <div class="section-header">Taxonomy</div>
+      <div class="section-content">
+        <p><strong>Family:</strong> Meliaceae</p>
+        <p><strong>Genus:</strong> Azadirachta</p>
+        <p><strong>Species:</strong> A. indica</p>
+      </div>
+    </section>
+
+    <!-- Growth Conditions -->
+    <section>
+      <div class="section-header">Growth Conditions</div>
+      <div class="section-content">
+        <p><strong>Soil:</strong> Well-drained sandy or clay soils</p>
+        <p><strong>Water:</strong> Drought-tolerant, requires minimal irrigation</p>
+        <p><strong>Sunlight:</strong> Full sun exposure</p>
+        <p><strong>Climate:</strong> Tropical and subtropical regions</p>
+      </div>
+    </section>
+
+    <!-- Medicinal/Practical Uses -->
+    <section>
+      <div class="section-header">Medicinal & Practical Uses</div>
+      <div class="section-content">
+        <p>Neem leaves, bark, and oil are widely used in traditional medicine for their antibacterial, antifungal, and anti-inflammatory properties. Neem oil is also used in natural pesticides and skincare products.</p>
+      </div>
+    </section>
+
+    <!-- Conservation Status -->
+    <section>
+      <div class="section-header">Conservation Status</div>
+      <div class="section-content">
+        <p>Currently listed as a species of Least Concern due to its wide distribution and adaptability.</p>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // ------------------------------
+    // Collapsible Section Interactivity
+    // ------------------------------
+    document.querySelectorAll('.section-header').forEach(header => {
+      header.addEventListener('click', () => {
+        const content = header.nextElementSibling;
+        content.classList.toggle('open');
+        if (content.classList.contains('open')) {
+          content.style.maxHeight = content.scrollHeight + "px";
+        } else {
+          content.style.maxHeight = null;
+        }
+      });
+    });
+  </script>
+</body>
+</html>
